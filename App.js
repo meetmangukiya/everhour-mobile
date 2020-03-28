@@ -1,19 +1,34 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Dimensions } from "react-native";
+import Projects from "./Projects";
+import Clients from "./Clients";
+import Settings from "./Settings";
+import { TabView, SceneMap } from "react-native-tab-view";
+import Constants from "expo-constants";
 
-export default function App() {
+const App = () => {
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: "projects", title: "Projects" },
+    { key: "clients", title: "Clients" },
+    { key: "settings", title: "Settings" }
+  ]);
+
+  const renderScene = SceneMap({
+    projects: Projects,
+    clients: Clients,
+    settings: Settings
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <View style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+      />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
